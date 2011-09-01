@@ -1,7 +1,12 @@
+require "socket"
+require "player.lua"
+
 function love.load()
+    udpport = socket.udp()
     serverThread = love.thread.newThread("server", "server.lua")
     serverThread:start()
     msgCheck = 2
+    players = {}
 end
 
 function love.draw()
@@ -13,6 +18,10 @@ function love.draw()
         love.graphics.print(msg, 20, 40)
     end
     
+    for i, p in pairs(players) do
+        p:draw()
+    end
+    
     if (err) then
         love.graphics.print(err, 20, 60)
     end
@@ -21,6 +30,14 @@ end
 function love.update(dt)
     if (msgCheck < 0) then
         msg = serverThread:receive("message")
+        if (msg) then
+            loadstring(msg)()
+            if (message.cmd == "connect") then
+                players[#players + 1] = player:new(message.opts)
+                text = "You were successfully connected"
+                udpport:sendto(text, "127.0.0.1", 3149)
+            end
+        end
         err = serverThread:receive("error")
         checked = os.date("Last checked at %X")
         msgCheck = 2
