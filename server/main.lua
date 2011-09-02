@@ -1,5 +1,6 @@
 require "socket"
 require "player.lua"
+require "messageHandler.lua"
 
 function love.load()
     udpport = socket.udp()
@@ -31,15 +32,7 @@ function love.update(dt)
     if (msgCheck < 0) then
         msg = serverThread:receive("message")
         if (msg) then
-            loadstring(msg)()
-            if (message.cmd == "connect") then
-                -- Set player's IP
-                port = serverThread:receive("port")
-                players[#players + 1] = player:new(message.opts)
-                players[#players].addr = port
-                text = "You were successfully connected"
-                udpport:sendto(text, port, 3149)
-            end
+            handleMessage(msg)
         end
         err = serverThread:receive("error")
         checked = os.date("Last checked at %X")
