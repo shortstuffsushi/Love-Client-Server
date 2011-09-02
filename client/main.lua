@@ -25,7 +25,7 @@ function love.update(dt)
         if (msgCheck < 0) then
             -- TODO do something with the message
             msg = clientThread:receive("status")
-            msgCheck = 5
+            msgCheck = 2
         else
             msgCheck = msgCheck - dt
         end

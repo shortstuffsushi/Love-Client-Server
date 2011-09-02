@@ -33,9 +33,12 @@ function love.update(dt)
         if (msg) then
             loadstring(msg)()
             if (message.cmd == "connect") then
+                -- Set player's IP
+                port = serverThread:receive("port")
                 players[#players + 1] = player:new(message.opts)
+                players[#players].addr = port
                 text = "You were successfully connected"
-                udpport:sendto(text, "127.0.0.1", 3149)
+                udpport:sendto(text, port, 3149)
             end
         end
         err = serverThread:receive("error")
