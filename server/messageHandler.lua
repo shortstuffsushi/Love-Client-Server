@@ -7,7 +7,7 @@ end
 
 function connectPlayer(opts)
     -- Set player's IP
-    port = serverThread:receive("port")
+    local port = serverThread:receive("port")
     players[#players + 1] = player:new(opts)
     players[#players].addr = port
     text = "You were successfully connected"

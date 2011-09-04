@@ -1,8 +1,7 @@
-require "socket"
+require "messageSender.lua"
 
 function love.load()
     clientThread = love.thread.newThread("client", "client.lua")
-    udpport = socket.udp()
     sentCount = 0
     msgCheck = 0
     typing = false
@@ -44,8 +43,7 @@ function love.keypressed(key, unicode)
     elseif (key == "return" and typing) then
         connected = true
         clientThread:start()
-        text = "message={cmd='connect',opts={}}"
-        udpport:sendto(text, "192.168.1.105", 3150)
+        connect()
         sent = text
         sentCount = 5
         typing = false
