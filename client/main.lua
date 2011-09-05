@@ -5,11 +5,13 @@ function love.load()
     sentCount = 0
     msgCheck = 0
     typing = false
+    shift = false
     text = ""
 end
 
 function love.draw()
     love.graphics.print("Typing: " .. (typing and "Yes" or "No"), 20, 20)
+    love.graphics.print("Connected: " .. (connected and "Yes" or "No"), 100, 20)
     love.graphics.print(text, 20, 40)
     if (sent) then
         love.graphics.print("Sent " .. sent, 20, 60)
@@ -38,17 +40,51 @@ function love.update(dt)
 end
 
 function love.keypressed(key, unicode)
-    if (key == "return" and not typing) then
-        typing = true
+    if (not typing) then
+        -- Start typing
+        if (key == "return") then
+            typing = true
+            text = ""
+        
+        -- Connect to server
+        elseif (key == "c" and not connected) then
+            clientThread:start()
+            connect()
+            connected = true
+        
+        -- Exit the game
+        elseif (key == "escape") then
+            love.event.push("q")
+        end
+    
+    -- Send a message to the server
     elseif (key == "return" and typing) then
-        connected = true
-        clientThread:start()
-        connect()
-        sent = text
-        sentCount = 5
+        if (connected) then
+            message(text)
+        end
         typing = false
-        text = ""
     elseif (typing) then
-        text = text .. key
+        handleKey(key, unicode)
+    end
+end
+
+function love.keyreleased(key)
+    if (key == "lshift" or key == "rshift") then
+        shift = false
+    end
+end
+
+function handleKey(key, unicode)
+    if (key == "backspace") then
+        text = string.sub(text, 0, string.len(text) - 1)
+    elseif (key == "escape") then
+        text = ""
+        typing = false
+    elseif (key == "lshift" or key == "rshift") then
+        shift = true
+    elseif (key == "tab") then
+        text = text .. "    "
+    else
+        text = text .. (shift and string.char(unicode) or key)
     end
 end

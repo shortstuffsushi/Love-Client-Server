@@ -13,3 +13,9 @@ end
 function connect()
     sendMessage("connect")
 end
+
+function message(txt)
+    sendMessage("msg", "{txt=" .. txt .. "}")
+    sent = text
+    sentCount = 5
+end
