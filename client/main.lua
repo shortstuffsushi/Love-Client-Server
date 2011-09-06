@@ -60,3 +60,9 @@ function love.update(dt)
         sent = nil
     end
 end
+
+function love.quit()
+    if (connected) then
+        disconnect()
+    end
+end

@@ -1,16 +1,14 @@
-require "socket"
 require "player.lua"
 require "messageHandler.lua"
 
 function love.load()
-    udpport = socket.udp()
     serverThread = love.thread.newThread("server", "server.lua")
     serverThread:start()
-    timeOut = 0
     players = {}
 end
 
 function love.draw()
+
     if (checked) then
         love.graphics.print(checked, 20, 20)
     end

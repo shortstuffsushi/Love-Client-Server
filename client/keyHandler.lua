@@ -9,8 +9,17 @@ function love.keypressed(key, unicode)
         -- Connect to server
         elseif (key == "c" and not connected) then
             clientThread:start()
-            connect()
+            if (id) then
+                reconnect()
+            else
+                connect()
+            end
             connected = true
+        
+        -- Disconnect from server
+        elseif (key == "x" and connected) then
+            disconnect()
+            connected = false
             
         -- Up movement
         elseif (key == "w") then
