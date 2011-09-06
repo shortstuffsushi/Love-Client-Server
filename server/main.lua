@@ -6,7 +6,7 @@ function love.load()
     udpport = socket.udp()
     serverThread = love.thread.newThread("server", "server.lua")
     serverThread:start()
-    msgCheck = 2
+    timeOut = 0
     players = {}
 end
 
@@ -19,6 +19,10 @@ function love.draw()
         love.graphics.print(msg, 20, 40)
     end
     
+    if (port) then
+        love.graphics.print(port, 20, 80)
+    end
+    
     for i, p in pairs(players) do
         p:draw()
     end
@@ -29,15 +33,10 @@ function love.draw()
 end
 
 function love.update(dt)
-    if (msgCheck < 0) then
         msg = serverThread:receive("message")
         if (msg) then
             handleMessage(msg)
         end
         err = serverThread:receive("error")
         checked = os.date("Last checked at %X")
-        msgCheck = 2
-    else
-        msgCheck = msgCheck - dt
-    end
 end

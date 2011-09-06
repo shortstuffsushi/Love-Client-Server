@@ -2,10 +2,6 @@ player = {}
 
 -- Faux construtor
 function player:new(x)
-    --loadstring(x)()
-    x.x = 40
-    x.y = 40
-    x.moving = false
     setmetatable(x, self)
     self.__index = self
     return x
