@@ -62,7 +62,8 @@ function love.update(dt)
 end
 
 function love.quit()
-    if (connected) then
+    -- Kill existing connection if it exists
+    if (connected and id) then
         disconnect()
     end
 end

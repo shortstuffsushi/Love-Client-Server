@@ -8,7 +8,6 @@ function love.load()
 end
 
 function love.draw()
-
     if (checked) then
         love.graphics.print(checked, 20, 20)
     end
