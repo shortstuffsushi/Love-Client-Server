@@ -1,9 +1,9 @@
 require "socket"
 
 -- Home Address
-local ipaddr  = "192.168.1.105"
+-- local ipaddr  = "192.168.1.105"
 -- UWM Address
--- local ipaddr  = "129.89.202.137"
+local ipaddr  = "10.220.251.213"
 local udpport = socket.udp()
 
 local function sendMessage(cmd, opts)

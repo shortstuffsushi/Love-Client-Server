@@ -8,9 +8,6 @@ function love.load()
 end
 
 function love.draw()
-    if (checked) then
-        love.graphics.print(checked, 20, 20)
-    end
     
     if (msg) then
         love.graphics.print(msg, 20, 40)
@@ -35,5 +32,4 @@ function love.update(dt)
             handleMessage(msg)
         end
         err = serverThread:receive("error")
-        checked = os.date("Last checked at %X")
 end

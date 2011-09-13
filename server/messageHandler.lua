@@ -19,7 +19,7 @@ function handleMessage(msg)
 
     -- Player Movement
     elseif (message.cmd == "update") then
-        movePlayer(players[message.id], message.loc)
+        movePlayer(message.id, message.loc)
     end
 end
 
@@ -37,11 +37,10 @@ end
 
 function reconnectPlayer(id, loc)
     players[id].active = true
-    players[id].x = loc.x
-    players[id].y = loc.y
+    movePlayer(id, loc)
 end
 
-function movePlayer(player, loc)
-    player.x = loc.x
-    player.y = loc.y
+function movePlayer(id, loc)
+    players[id].x = loc.x
+    players[id].y = loc.y
 end
