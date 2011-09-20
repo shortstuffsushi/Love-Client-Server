@@ -10,8 +10,8 @@ function love.load()
 end
 
 function love.draw()
-    love.graphics.print("Typing: "    .. (typing    and "Yes" or "No"),  20, 20)
-    love.graphics.print("Connected: " .. (connected and "Yes" or "No"), 100, 20)
+    love.graphics.print("Typing: "    ..  (typing            and "Yes" or "No"),  20, 20)
+    love.graphics.print("Connected: " .. ((connected and id) and "Yes" or "No"), 100, 20)
     love.graphics.print(text, 20, 40)
     if (sent) then
         love.graphics.print("Sent " .. sent, 20, 60)

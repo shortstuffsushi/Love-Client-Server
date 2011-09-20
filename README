@@ -1,0 +1,11 @@
+[Controls]
+
+WASD  -- Movement
+C     -- Connect/reconnect
+X     -- Disconnect
+ENTER -- Begin typing (if not tpying), submit text (if typing)
+ESC   -- Exit (if not typing), exit/clear text (if typing)
+
+[Setup]
+To connect to a server, you must change the IP Address in the messageSender.lua file to the address of the server.
+That's about it.
