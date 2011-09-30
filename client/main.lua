@@ -23,7 +23,7 @@ function love.draw()
     end
 
     -- Draw me
-    -- love.graphics.circle("fill", me.x, me.y, 4, 10)
+    love.graphics.circle("fill", me.x, me.y, 4, 10)
 end
 
 function love.update(dt)
