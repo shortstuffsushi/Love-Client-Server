@@ -1,6 +1,7 @@
 require "socket"
 
 local udpport = socket.udp()
+connections = ""
 
 function handleMessage(msg)
     loadstring(msg)()
@@ -26,9 +27,22 @@ end
 function connectPlayer(loc)
     -- Set player's IP
     port = serverThread:receive("port")
-    players[#players + 1] = player:new(loc)
-    players[#players].addr = port
-    udpport:sendto(#players, port, 3149)
+    
+    -- Ignore multiple connections from the same IP
+    if (string.find(connections, port)) then return end
+    
+    -- Add new connection to list
+    connections = connections .. port .. " "
+
+    -- Create new player, assign their IP
+    players[#players + 1]  = player:new(loc)
+    
+    player = players[#players]
+    player.id   = #players
+    player.addr = port 
+    
+    -- Return the new player an ID
+    sender.sendID(player)
 end
 
 function disconnectPlayer(id)

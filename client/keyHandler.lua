@@ -7,19 +7,12 @@ function love.keypressed(key, unicode)
             typing = true
         
         -- Connect to server
-        elseif (key == "c" and not connected) then
-            clientThread:start()
-            if (id) then
-                reconnect()
-            else
-                connect()
-            end
-            connected = true
+        elseif (key == "c") then
+            client.connect(me)
         
         -- Disconnect from server
-        elseif (key == "x" and connected) then
-            disconnect()
-            connected = false
+        elseif (key == "x") then
+            client.disconnect()
             
         -- Up movement
         elseif (key == "w") then
@@ -44,9 +37,7 @@ function love.keypressed(key, unicode)
     
     -- Send a message to the server
     elseif (key == "return" and typing) then
-        if (connected) then
-            message(text)
-        end
+        client.message(text)
         text = ""
         typing = false
     elseif (typing) then
