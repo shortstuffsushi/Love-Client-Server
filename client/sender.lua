@@ -4,6 +4,8 @@ require "socket"
 local ipaddr  = "192.168.1.107"
 -- UWM Address
 --local ipaddr  = "10.220.251.213"
+-- Alan's Address
+--local ipaddr = "65.30.60.165"
 local udpport = socket.udp()
 
 local function sendMessage(cmd, opts)
