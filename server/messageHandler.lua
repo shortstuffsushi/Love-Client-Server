@@ -25,9 +25,10 @@ function handleMessage(msg)
 end
 
 function connectPlayer(loc)
+
     -- Set player's IP
-    port = serverThread:receive("port")
-    
+    local port = serverThread:receive("p" .. listenerIndex)
+
     -- Ignore multiple connections from the same IP
     if (string.find(connections, port)) then return end
     
@@ -36,11 +37,11 @@ function connectPlayer(loc)
 
     -- Create new player, assign their IP
     players[#players + 1]  = player:new(loc)
-    
+
     player = players[#players]
     player.id   = #players
-    player.addr = port 
-    
+    player.addr = port
+
     -- Return the new player an ID
     sender.sendID(player)
 end

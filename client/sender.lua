@@ -1,7 +1,7 @@
 require "socket"
 
 -- Home Address
-local ipaddr  = "192.168.1.107"
+local ipaddr  = "192.168.1.104"
 -- UWM Address
 --local ipaddr  = "10.220.251.213"
 -- Alan's Address
