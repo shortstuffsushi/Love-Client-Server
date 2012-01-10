@@ -38,9 +38,9 @@ function love.draw()
         end
     end
 
-    if (fps) then
-        love.graphics.print("FPS: " .. fps, 20, 80)
-    end
+--    if (fps) then
+--        love.graphics.print("FPS: " .. fps, 20, 80)
+--    end
 
     -- Draw me
     love.graphics.circle("fill", me.x, me.y, 4, 10)
@@ -59,16 +59,16 @@ function love.update(dt)
 
     -- Vertical movement, up has preference
     if (mUp) then
-        me.y = me.y - baseFPS/fps
+        me.y = math.floor(me.y - baseFPS/fps + 0.5)
     elseif (mDown) then
-        me.y = me.y + baseFPS/fps
+        me.y = math.floor(me.y + baseFPS/fps + 0.5)
     end
 
     -- Horizontal movement, left has preference
     if (mLeft) then
-        me.x = me.x - baseFPS/fps
+        me.x = math.floor(me.x - baseFPS/fps + 0.5)
     elseif (mRight) then
-        me.x = me.x + baseFPS/fps
+        me.x = math.floor(me.x + baseFPS/fps + 0.5)
     end
 
     -- On movement, set the flag to true
