@@ -1,11 +1,3 @@
--- Idea for "equal behavior" on all cpus
--- Movement per update = Some Base FPS (maybe 60) / Actual FPS
--- So someone with 240 frames per second moves at a rate of 1/4px per frame,
--- and someone with 30 frames per second moves at a rate of   2px per frame
-
--- Similarly, using a fixed time sampling should resolve the problem
--- of faster CPUs overshadowing slower ones' messages to the server.
-
 require "client.lua"
 require "keyHandler.lua"
 
@@ -37,10 +29,6 @@ function love.draw()
             love.graphics.circle("fill", o.x, o.y, 4, 10)
         end
     end
-
---    if (fps) then
---        love.graphics.print("FPS: " .. fps, 20, 80)
---    end
 
     -- Draw me
     love.graphics.circle("fill", me.x, me.y, 4, 10)

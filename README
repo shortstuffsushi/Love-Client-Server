@@ -1,12 +1,65 @@
-[Controls]
+[ Controls ]
 
 WASD  -- Movement
 C     -- Connect/reconnect
 X     -- Disconnect
 ENTER -- Begin typing (if not tpying), submit text (if typing)
-ESC   -- Exit (if not typing), exit/clear text (if typing)
+ESC   -- Exit application (if not typing), exit/clear text (if typing)
 
-[Setup]
+
+[ Setup ]
 
 To connect to a server, you must change the IP Address in the client/sender.lua file to the address of the server.
+You currently need to open ports 3149-3151 for UDP connections if you're going outside of your network.
 That's about it.
+
+
+[ Equal Behavior Explanation ]
+
+Because movement is based on each call to the update method, slower
+CPUs will change positions less frequently than a faster one. To
+accomodate for this, we find some base value, and scale movement to it.
+
+Movement per update() = Some Base FPS (currently 120) / Actual FPS
+So someone with 240 frames per second moves at a rate of 1/2px per frame,
+and someone with 30 frames per second moves at a rate of   4px per frame
+
+Similarly, using a fixed time sampling should resolve the problem
+of faster CPUs overshadowing slower ones' messages to the server.
+This issue was caused because the client was sending every update().
+That means fast computers might send every .005 seconds, where a
+slow may only send .01 seconds, or even less often, so faster requests
+bog down the server queue and effectively choke out slower CPUs. Again,
+to accomodate this, we send updates only every X seconds (currently .025)
+so they are closer to sending at the same frequency.
+
+Also, information is not sent if no change has occured.
+
+
+[ Server Queueing Explanation ]
+
+The main listener of the server operates in its own separate server thread.
+The way thread communications work, as I understand them, is that one thread
+dumps a message into a "channel," which can be listened for by another thread.
+
+The server thread is continuously listening on a port, and immediately places
+the received message into a channel between it and the main thread. Previously
+this would cause a problem when two connections occured at the "same" time
+(IE, before the main thread checked the channel, the server would overwrite the
+message in it).
+
+To resolve this, there is no longer a static channel, but rather a counter. Both
+the server and main start at 0. The server places a request in channel 0, then
+increments to channel 1 regardless of the status of the main thread, and will
+continue to dump into channels endlessly, with no knowledge of the status of
+previous messages passed through.
+
+The main thread will check the channel it is listening to every time update() is
+called. If the channel contains a message, it operates on the message, then increments
+its counter and begins listening on the next channel. Any time there is a message,
+it will grab it, operate on it, then move to then next channel.
+
+Unfortunately, this means channels are (currently) never reused. I feel like it
+may be safe to assume that after some high number is reached (even just 1000 or so),
+the main thread will likely have finished, and it would be safe to reuse channels, but
+there isn't really any guaruntee on that, so I'm holding off for now.
