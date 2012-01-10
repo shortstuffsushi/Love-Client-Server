@@ -12,6 +12,7 @@ require "keyHandler.lua"
 local others
 local seconds = 0
 local changed = false
+local baseFPS = 120
 
 function love.load()
     typing = false
@@ -37,12 +38,16 @@ function love.draw()
         end
     end
 
+    if (fps) then
+        love.graphics.print("FPS: " .. fps, 20, 80)
+    end
+
     -- Draw me
     love.graphics.circle("fill", me.x, me.y, 4, 10)
 end
 
 function love.update(dt)
-
+    fps = love.timer.getFPS()
     seconds = seconds + dt
 
     -- If it's been more than .025 seconds and you move, send the changes to the server
@@ -54,16 +59,16 @@ function love.update(dt)
 
     -- Vertical movement, up has preference
     if (mUp) then
-        me.y = me.y - 2
+        me.y = me.y - baseFPS/fps
     elseif (mDown) then
-        me.y = me.y + 2
+        me.y = me.y + baseFPS/fps
     end
 
     -- Horizontal movement, left has preference
     if (mLeft) then
-        me.x = me.x - 2
+        me.x = me.x - baseFPS/fps
     elseif (mRight) then
-        me.x = me.x + 2
+        me.x = me.x + baseFPS/fps
     end
 
     -- On movement, set the flag to true
