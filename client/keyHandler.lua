@@ -29,47 +29,67 @@ function love.keypressed(key, unicode)
         -- Right movement
         elseif (key == "d") then
             mRight = true
-        
+
         -- Exit the game
         elseif (key == "escape") then
             love.event.push("q")
         end
-    
-    -- Send a message to the server
-    elseif (key == "return" and typing) then
+
+    -- Return pressed to end a 'typing' session, send the message
+    elseif (key == "return") then
         client.message(text)
         text = ""
         typing = false
-    elseif (typing) then
+
+    -- Continued typing, handle current character
+    else
         handleKey(key, unicode)
     end
 end
 
 function love.keyreleased(key)
+    -- Shift released, set flag to false
     if (key == "lshift" or key == "rshift") then
         shift = false
+
+    -- Stop up movement
     elseif (key == "w") then
         mUp = false
+
+    -- Stop down movement
     elseif (key == "s") then
         mDown = false
+
+    -- Stop left movement
     elseif (key == "a") then
         mLeft = false
+
+    -- Stop right movement
     elseif (key == "d") then
         mRight = false
     end
 end
 
 function handleKey(key, unicode)
+    -- Backspace, remove a character
     if (key == "backspace") then
         text = string.sub(text, 0, string.len(text) - 1)
+
+    -- Esc, stop typing/clear message
     elseif (key == "escape") then
         text = ""
         typing = false
+
+    -- Shift, set shift flag to true
     elseif (key == "lshift" or key == "rshift") then
         shift = true
+
+    -- Tab, add four spaces
     elseif (key == "tab") then
         text = text .. "    "
-    else
+
+    -- Normal key, append to text string
+        else
         text = text .. (shift and string.char(unicode) or key)
     end
 end

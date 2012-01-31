@@ -2,6 +2,7 @@ require "socket"
 local udpport = socket.udp()
 
 sender = {}
+
 function sender.updateAll(ps)
     others = "o={"
     for i, p in pairs(ps) do
@@ -22,4 +23,3 @@ end
 function sender.sendID(p)
     udpport:sendto(p.id, p.addr, 3151)
 end
-   
