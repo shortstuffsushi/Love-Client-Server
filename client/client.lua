@@ -21,7 +21,7 @@ function love.run()
             love.timer.step()
             dt = love.timer.getDelta()
         end
-        
+
         m = msgThread:receive("message")
         if (m) then
             -- Handles trying to connect
@@ -33,16 +33,16 @@ function love.run()
                 else
                     trying = trying - dt
                 end
-                
+
             -- Handle messages when connected
             elseif (connected) then
                 if (client.receiveMessage) then client.receiveMessage(m) end
             end
         end
-        
+
         s = cmdThread:receive("status")
         if (s and client.receiveStatus) then client.receiveStatus(s) end
-        
+
         if love.update then love.update(dt) end -- will pass 0 if love.timer is disabled
         if love.graphics then
             love.graphics.clear()
@@ -53,10 +53,10 @@ function love.run()
         if love.event then
             for e,a,b,c in love.event.poll() do
                 if e == "q" then
-                
+
                     -- Kill existing connection if it exists
                     if (connected) then sender.disconnect(id) end
-                    
+
                     if not love.quit or not love.quit() then
                         if love.audio then
                             love.audio.stop()

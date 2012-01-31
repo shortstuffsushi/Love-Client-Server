@@ -3,7 +3,7 @@ require "socket"
 -- Home Address
 --local ipaddr  = "192.168.1.104"
 -- UWM Address
-local ipaddr  = "10.220.251.213"
+local ipaddr  = "10.220.226.119"
 -- Alan's Address
 --local ipaddr = "65.30.60.165"
 local udpport = socket.udp()

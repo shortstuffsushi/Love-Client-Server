@@ -31,7 +31,7 @@ function connectPlayer(loc)
 
     -- Ignore multiple connections from the same IP
     if (string.find(connections, port)) then return end
-    
+
     -- Add new connection to list
     connections = connections .. port .. " "
 

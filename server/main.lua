@@ -6,9 +6,7 @@ listenerIndex = 0
 
 function love.load()
     serverThread = love.thread.newThread("server", "messageListener.lua")
-    senderThread = love.thread.newThread("sender", "sender.lua")
     serverThread:start()
-    senderThread:start()
     players = {}
 
     addr = "Server address  " .. socket.dns.toip(socket.dns.gethostname())
