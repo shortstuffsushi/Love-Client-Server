@@ -9,6 +9,9 @@ ESC   -- Exit application (if not typing), exit/clear text (if typing)
 
 [ Setup ]
 
+You will need to download the Love2D application to run the program. It's not currently included, but you can
+easily navigate to www.love2d.org. It's free, open-source, and quite easy to pick up on. Feel free to play with it yourself.
+
 To connect to a server, you must change the IP Address in the client/sender.lua file to the address of the server.
 You currently need to open ports 3149-3151 for UDP connections if you're going outside of your network.
 That's about it.
