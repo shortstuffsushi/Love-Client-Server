@@ -1,10 +1,10 @@
-require "client.lua"
-require "keyHandler.lua"
+require "client"
+require "keyHandler"
 
 local others
 local seconds = 0
 local changed = false
-local baseFPS = 120
+local baseFPS = 60
 
 function love.load()
     typing = false

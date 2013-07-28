@@ -9,7 +9,7 @@ function listen()
     local received
     while (true) do
         received = udpport:receive(1024)
-        thisThread:send("message", received)
+        thisThread:set("message", received)
     end
 end
 

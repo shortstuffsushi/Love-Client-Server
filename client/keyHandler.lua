@@ -32,7 +32,7 @@ function love.keypressed(key, unicode)
 
         -- Exit the game
         elseif (key == "escape") then
-            love.event.push("q")
+            love.event.push("quit")
         end
 
     -- Return pressed to end a 'typing' session, send the message

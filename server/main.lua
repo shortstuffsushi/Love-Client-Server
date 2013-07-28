@@ -1,12 +1,11 @@
-require "player.lua"
-require "sender.lua"
-require "messageHandler.lua"
-
-listenerIndex = 0
+require "player"
+require "sender"
+require "messageHandler"
 
 function love.load()
     serverThread = love.thread.newThread("server", "messageListener.lua")
     serverThread:start()
+    listenerIndex = 0
     players = {}
 
     addr = "Server address  " .. socket.dns.toip(socket.dns.gethostname())
@@ -38,11 +37,11 @@ function love.draw()
 end
 
 function love.update(dt)
-    msg = serverThread:receive(listenerIndex)
+    msg = serverThread:get(listenerIndex)
     if (msg) then
         handleMessage(msg)
         listenerIndex = listenerIndex + 1
         sender.updateAll(players)
     end
-    err = serverThread:receive("error")
+    err = serverThread:get("error")
 end
