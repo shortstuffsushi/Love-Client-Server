@@ -4,6 +4,7 @@ Menu = {}
 Menu.__index = Menu
 
 local BOMBERMAN_TEXT_WIDTH = 465
+local TITLE_FONT = love.graphics.newFont(72)
 
 local hostButton
 local joinButton
@@ -14,17 +15,17 @@ function Menu.load()
     local hostX = windowWidth * 0.275
     local joinX = windowWidth * 0.6
     
-    hostButton = Button.new({ x = hostX, y = 200, width = 130, height = 44 }, "Host Game")
-    joinButton = Button.new({ x = joinX, y = 200, width = 120, height = 44 }, "Join Game")
+    hostButton = Button.new({ x = hostX, y = 220, width = 130, height = 44 }, "Host Game")
+    joinButton = Button.new({ x = joinX, y = 220, width = 120, height = 44 }, "Join Game")
     
     titleLocation = windowWidth / 2 - BOMBERMAN_TEXT_WIDTH / 2
+
+    love.graphics.setBackgroundColor(255, 255, 255)
 end
 
 function Menu.draw()
-    love.graphics.setBackgroundColor(255, 255, 255)
-
     love.graphics.setColor(20, 130, 200)
-    love.graphics.setFont(love.graphics.newFont(72))
+    love.graphics.setFont(TITLE_FONT)
     love.graphics.print("BOMBERMAN", titleLocation, 50)
 
     hostButton:draw()

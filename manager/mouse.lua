@@ -43,13 +43,13 @@ end
 
 function love.mousepressed(x, y, button)
     if (button == 'l') then
-        local xMod = math.floor(x / BUCKET_SIZE)
-        local yMod = math.floor(y / BUCKET_SIZE)
+        local xBase = math.floor(x / BUCKET_SIZE)
+        local yBase = math.floor(y / BUCKET_SIZE)
 
-        local xBucket = MouseManager.listeners[xMod]
+        local xBucket = MouseManager.listeners[xBase]
         if (not xBucket) then return end
 
-        local yBucket = xBucket[yMod]
+        local yBucket = xBucket[yBase]
         if (not yBucket) then return end
 
         for i=1,#yBucket do
