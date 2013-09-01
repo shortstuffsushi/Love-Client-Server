@@ -37,6 +37,10 @@ function MouseManager.removeListener(listener)
     -- TODO figure out how to delete array items in lua
 end
 
+function MouseManager.rectContainsPoint(rect, x, y)
+    return rect.x <= x and rect.x + rect.width >= x and rect.y <= y and rect.y + rect.height >= y
+end
+
 function love.mousepressed(x, y, button)
     if (button == 'l') then
         local xMod = math.floor(x / BUCKET_SIZE)
@@ -50,7 +54,7 @@ function love.mousepressed(x, y, button)
 
         for i=1,#yBucket do
             local listener = yBucket[i]
-            if (x < listener.frame.x + listener.frame.width and y < listener.frame.y + listener.frame.height and listener.mouseDown) then
+            if (MouseManager.rectContainsPoint(listener.frame, x, y) and listener.mouseDown) then
                 listener:mouseDown(x, y)
             end
         end
@@ -69,7 +73,7 @@ function love.mousereleased(x, y, button)
         if (not yBucket) then return end
         
         for i=1,#yBucket do
-            if (x < listener.frame.x + listener.frame.width and y < listener.frame.y + listener.frame.height and listener.mouseUp) then
+            if (MouseManager.rectContainsPoint(listener.frame, x, y) and listener.mouseUp) then
                 listener:mouseUp(x, y)
             end
         end
