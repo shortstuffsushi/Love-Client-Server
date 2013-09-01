@@ -1,19 +1,16 @@
 require "client"
 require "keyHandler"
 
-local others
+local others = {}
 local seconds = 0
 local changed = false
 local baseFPS = 60
 
-function love.load()
-    typing = false
-    me = { x = 100, y = 100 }
-    text = ""
-end
+typing = false
+me = { x = 100, y = 100 }
+text = ""
 
 function love.draw()
-
     if (typing) then
         love.graphics.print("> " .. text , 20, 40)
     end
@@ -24,10 +21,8 @@ function love.draw()
     end
 
     -- Draw them
-    if (others) then
-        for i,o in ipairs(others) do
-            love.graphics.circle("fill", o.x, o.y, 4, 10)
-        end
+    for i,o in ipairs(others) do
+        love.graphics.circle("fill", o.x, o.y, 4, 10)
     end
 
     -- Draw me
@@ -36,6 +31,7 @@ end
 
 function love.update(dt)
     fps = love.timer.getFPS()
+    adjustedFPS = baseFPS / fps;
     seconds = seconds + dt
 
     -- If it's been more than .025 seconds and you move, send the changes to the server
@@ -47,16 +43,16 @@ function love.update(dt)
 
     -- Vertical movement, up has preference
     if (mUp) then
-        me.y = math.floor(me.y - baseFPS/fps + 0.5)
+        me.y = math.floor(me.y - adjustedFPS + 0.5)
     elseif (mDown) then
-        me.y = math.floor(me.y + baseFPS/fps + 0.5)
+        me.y = math.floor(me.y + adjustedFPS + 0.5)
     end
 
     -- Horizontal movement, left has preference
     if (mLeft) then
-        me.x = math.floor(me.x - baseFPS/fps + 0.5)
+        me.x = math.floor(me.x - adjustedFPS + 0.5)
     elseif (mRight) then
-        me.x = math.floor(me.x + baseFPS/fps + 0.5)
+        me.x = math.floor(me.x + adjustedFPS + 0.5)
     end
 
     -- On movement, set the flag to true
