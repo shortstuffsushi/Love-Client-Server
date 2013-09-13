@@ -37,24 +37,25 @@ function MouseManager.removeListener(listener)
 end
 
 function MouseManager.rectContainsPoint(rect, x, y)
-    return rect.x <= x and rect.x + rect.width >= x and rect.y <= y and rect.y + rect.height >= y
+    -- Note, strictly greater than, that last pixel is a bit touchy
+    return rect.x <= x and rect.x + rect.width > x and rect.y <= y and rect.y + rect.height > y
 end
 
 function love.mousepressed(x, y, button)
     if (button == 'l') then
-        local xBase = math.floor(x / BUCKET_SIZE)
-        local yBase = math.floor(y / BUCKET_SIZE)
+        local xBucketIndex = math.floor(x / BUCKET_SIZE)
+        local yBucketIndex = math.floor(y / BUCKET_SIZE)
 
-        local xBucket = MouseManager.listeners[xBase]
+        local xBucket = MouseManager.listeners[xBucketIndex]
         if (not xBucket) then return end
 
-        local yBucket = xBucket[yBase]
+        local yBucket = xBucket[yBucketIndex]
         if (not yBucket) then return end
 
-        for i=1,#yBucket do
+        for i = 1, #yBucket do
             local listener = yBucket[i]
             if (MouseManager.rectContainsPoint(listener.frame, x, y) and listener.mouseDown) then
-                currentPressedObjects[#currentPressedObjects + 1] = listener
+                MouseManager.currentPressedObjects[#MouseManager.currentPressedObjects + 1] = listener
                 listener:mouseDown(x, y)
             end
         end
@@ -63,19 +64,23 @@ end
 
 function love.mousereleased(x, y, button)
     if (button == 'l') then
-        local xMod = x % BUCKET_SIZE
-        local yMod = y % BUCKET_SIZE
+        -- Go through all the objects that were initially selected
+        for i = 1, #MouseManager.currentPressedObjects do
+            local pressedListener = MouseManager.currentPressedObjects[i]
 
-        local xBucket = MouseManager.listeners[xMod]
-        if (not xBucket) then return end
-
-        local yBucket = xBucket[yMod]
-        if (not yBucket) then return end
-        
-        for i=1,#yBucket do
-            if (MouseManager.rectContainsPoint(listener.frame, x, y) and listener.mouseUp) then
-                listener:mouseUp(x, y)
+            -- Call the appropriate listener method depending on the coordinate
+            if (MouseManager.rectContainsPoint(pressedListener.frame, x, y)) then
+                if (pressedListener.mouseUpInside) then
+                    pressedListener:mouseUpInside(x, y)
+                end
+            else
+                if (pressedListener.mouseUpOutside) then
+                    pressedListener:mouseUpOutside(x, y)
+                end
             end
         end
+
+        -- Reset pressed object list
+        MouseManager.currentPressedObjects = {}
     end
 end
